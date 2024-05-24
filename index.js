@@ -13,10 +13,16 @@ function GameBoard(){
    const values = board.map((row) => row.map((cell) => cell.getMark()));
    console.log(values);
    };
-    return {printBoard}
+
+   const getSpace = (col,row) => board[col][row].getMark()
+
+   const inputMark = (col,row,player) => {
+    board[col][row].setMark(player.getMark());
+   }
+    return {printBoard,inputMark,getSpace}
 }
 function Cell(){
-    const mark = "";
+    let mark = "";
     const setMark = (player) => {
         mark = player;
     };
@@ -25,5 +31,40 @@ function Cell(){
 }
 function Player(mark){
     const getMark = () => mark
-    return getMark
+    return {getMark}
 }
+function GameController(){
+    gameboard = GameBoard()
+    playerX = Player("X")
+    playerO = Player("O")
+    let activePlayer = playerO
+    const switchActivePlayer = () => activePlayer === playerO ? activePlayer = playerX : activePlayer = playerO;
+    const getActivePlayer = () => activePlayer;
+    const placeMark = (player) => {
+        const col = Number(prompt("which column?"));
+        const row = Number(prompt("which row?"));
+        gameboard.inputMark(col,row,player);
+    }
+    const checkForWin = () =>{
+        //check for win verticaly
+        const playerMark = activePlayer.getMark()
+        for(i=0;i<3;i++){
+            if (gameboard.getSpace(i,0) === playerMark && gameboard.getSpace(i,1) === playerMark && gameboard.getSpace(i,2) === playerMark){ 
+                console.log(`${gameboard.getSpace(i,0)} won!`);
+                break;
+            }
+        }
+    }
+    const turn = () => {
+        for(i=0;i<3;i++){
+        console.log(`${activePlayer.getMark()}'s turn`)
+        placeMark(activePlayer)
+        checkForWin()
+        switchActivePlayer()
+        gameboard.printBoard()
+        }
+    }
+    return {turn}
+}
+game = GameController()
+game.turn()
