@@ -16,8 +16,8 @@ function GameBoard(){
 
    const getSpace = (col,row) => board[col][row].getMark()
 
-   const inputMark = (col,row,player) => {
-    board[col][row].setMark(player.getMark());
+   const inputMark = (row,col,player) => {
+    board[row][col].setMark(player.getMark());
    }
     return {printBoard,inputMark,getSpace}
 }
@@ -43,7 +43,7 @@ function GameController(){
     const placeMark = (player) => {
         const col = Number(prompt("which column?"));
         const row = Number(prompt("which row?"));
-        gameboard.inputMark(col,row,player);
+        gameboard.inputMark(row,col,player);
     }
     const checkForWin = () =>{
         //check for win verticaly
@@ -51,15 +51,34 @@ function GameController(){
         for(i=0;i<3;i++){
             if (gameboard.getSpace(i,0) === playerMark && gameboard.getSpace(i,1) === playerMark && gameboard.getSpace(i,2) === playerMark){ 
                 console.log(`${gameboard.getSpace(i,0)} won!`);
-                break;
+                return true;
             }
         }
+        //check for win horizontaly
+        for(i=0;i<3;i++){
+            if (gameboard.getSpace(0,i) === playerMark && gameboard.getSpace(1,i) === playerMark && gameboard.getSpace(2,i) === playerMark){             
+                console.log(`${gameboard.getSpace(i,0)} won!`);
+                return true;
+            }
+        }
+        //check for win diagonaly
+            if (gameboard.getSpace(0,0) === playerMark && gameboard.getSpace(1,1) === playerMark && gameboard.getSpace(2,2) === playerMark){
+                console.log(`${gameboard.getSpace(0,0)} won!`);
+                return true;
+            }
+            if (gameboard.getSpace(0,2) === playerMark && gameboard.getSpace(1,1) === playerMark && gameboard.getSpace(2,0) === playerMark){
+                console.log(`${gameboard.getSpace(2,0)} won!`);
+                return true;
+            }
     }
     const turn = () => {
-        for(i=0;i<3;i++){
+        for(k=0;k<8;k++){
         console.log(`${activePlayer.getMark()}'s turn`)
         placeMark(activePlayer)
-        checkForWin()
+        if(checkForWin()){
+            gameboard.printBoard()
+            break;
+        }
         switchActivePlayer()
         gameboard.printBoard()
         }
