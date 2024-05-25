@@ -18,7 +18,8 @@ function GameBoard() {
 
   const inputMark = (row, col, player) => {
     board[row][col].setMark(player.getMark());
-  };
+    }
+  
   const drawBoard = () => {
     const values = board.map((row) => row.map((cell) => cell.getMark()));
     const container = document.querySelector(".container");
@@ -58,9 +59,15 @@ function GameController() {
       : (activePlayer = playerO);
   const getActivePlayer = () => activePlayer;
   const placeMark = (player) => {
+    while (true){
     const col = Number(prompt("which column?"));
     const row = Number(prompt("which row?"));
+    if (gameboard.getSpace(row,col) === ""){
     gameboard.inputMark(row, col, player);
+    break;
+    }
+    console.log("this cell already contains a mark!")
+    }
   };
   const checkForWin = () => {
     //check for win verticaly
@@ -105,7 +112,7 @@ function GameController() {
     }
   };
   const turn = () => {
-    for (let k = 0; k < 8; k++) {
+    for (let k = 0; k < 9; k++) {
       console.log(`${activePlayer.getMark()}'s turn`);
       placeMark(activePlayer);
       if (checkForWin()) {
