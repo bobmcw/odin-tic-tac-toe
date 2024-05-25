@@ -21,13 +21,18 @@ function GameBoard() {
   };
   const drawBoard = () => {
     const values = board.map((row) => row.map((cell) => cell.getMark()));
+    const container = document.querySelector(".container");
     for (let i = 0; i < values.length(); i++) {
+        const row = document.createElement("div")
       for (let j = 0; j < values[i].length(); j++) {
-        let;
+       const cell = document.createElement("div")
+       cell.values = values[i][j];
+       row.appendChild(cell) 
       }
+      container.appendChild(row)
     }
   };
-  return { printBoard, inputMark, getSpace };
+  return { printBoard, inputMark, getSpace, drawBoard };
 }
 function Cell() {
   let mark = "";
