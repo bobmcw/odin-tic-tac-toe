@@ -117,7 +117,7 @@ function GameController() {
       gameboard.getSpace(1, 1) === playerMark &&
       gameboard.getSpace(2, 0) === playerMark
     ) {
-      alert(`${gameboard.getSpace(0, 0)} won!`);
+      alert(`${gameboard.getSpace(0, 2)} won!`);
       gameEnded = true
       return true;
     }
