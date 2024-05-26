@@ -53,19 +53,21 @@ function GameController() {
   gameboard = GameBoard();
   playerX = Player("X");
   playerO = Player("O");
+  playerindicator = document.querySelector(".currentplayer")
   gameboard.drawBoard()
   let activePlayer = playerO;
-  const switchActivePlayer = () =>
+  const switchActivePlayer = () => {
     activePlayer === playerO
       ? (activePlayer = playerX)
       : (activePlayer = playerO);
-  const getActivePlayer = () => activePlayer;
+      playerindicator.innerText = activePlayer.getMark();
+  };
   const placeMark = (row,col,player=activePlayer) => {
     if (gameboard.getSpace(row,col) === ""){
     gameboard.inputMark(row, col, player);
     gameboard.drawBoard()
-    switchActivePlayer()
     checkForWin()
+    switchActivePlayer()
     return true;
     }
     console.log("this cell already contains a mark!")
@@ -113,19 +115,7 @@ function GameController() {
       return true;
     }
   };
-  const turn = (col,row) => {
-      console.log(`${activePlayer.getMark()}'s turn`);
-      if (placeMark(activePlayer)){
-        if (checkForWin()) {
-        gameboard.printBoard();
-        gameboard.drawBoard();
-      }
-      switchActivePlayer();
-      gameboard.printBoard();
-      gameboard.drawBoard();
-      }
-    };
-  return { turn, placeMark };
+  return { placeMark };
 }
 
 game = GameController();
