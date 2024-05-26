@@ -51,6 +51,7 @@ function Player(mark) {
 }
 function GameController() {
   gameboard = GameBoard();
+  gameEnded = false
   playerX = Player("X");
   playerO = Player("O");
   playerindicator = document.querySelector(".currentplayer")
@@ -63,7 +64,7 @@ function GameController() {
       playerindicator.innerText = activePlayer.getMark();
   };
   const placeMark = (row,col,player=activePlayer) => {
-    if (gameboard.getSpace(row,col) === ""){
+    if (gameboard.getSpace(row,col) === "" && !gameEnded){
     gameboard.inputMark(row, col, player);
     gameboard.drawBoard()
     checkForWin()
@@ -82,7 +83,8 @@ function GameController() {
         gameboard.getSpace(i, 1) === playerMark &&
         gameboard.getSpace(i, 2) === playerMark
       ) {
-        console.log(`${gameboard.getSpace(i, 0)} won!`);
+        alert(`${gameboard.getSpace(i, 0)} won!`);
+        gameEnded = true
         return true;
       }
     }
@@ -93,7 +95,8 @@ function GameController() {
         gameboard.getSpace(1, i) === playerMark &&
         gameboard.getSpace(2, i) === playerMark
       ) {
-        console.log(`${gameboard.getSpace(i, 0)} won!`);
+        alert(`${gameboard.getSpace(i, 0)} won!`);
+        gameEnded = true
         return true;
       }
     }
@@ -103,7 +106,8 @@ function GameController() {
       gameboard.getSpace(1, 1) === playerMark &&
       gameboard.getSpace(2, 2) === playerMark
     ) {
-      console.log(`${gameboard.getSpace(0, 0)} won!`);
+      alert(`${gameboard.getSpace(0, 0)} won!`);
+      gameEnded = true
       return true;
     }
     if (
@@ -111,7 +115,8 @@ function GameController() {
       gameboard.getSpace(1, 1) === playerMark &&
       gameboard.getSpace(2, 0) === playerMark
     ) {
-      console.log(`${gameboard.getSpace(2, 0)} won!`);
+      alert(`${gameboard.getSpace(0, 0)} won!`);
+      gameEnded = true
       return true;
     }
   };
