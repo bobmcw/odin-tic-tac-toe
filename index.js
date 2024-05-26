@@ -29,6 +29,7 @@ function GameBoard() {
       for (let j = 0; j < values[i].length; j++) {
         const cell = document.createElement("div");
         cell.innerText = values[i][j];
+        cell.addEventListener("click", () => game.placeMark(i,j))
         row.appendChild(cell);
       }
       container.appendChild(row);
@@ -52,23 +53,24 @@ function GameController() {
   gameboard = GameBoard();
   playerX = Player("X");
   playerO = Player("O");
+  gameboard.drawBoard()
   let activePlayer = playerO;
   const switchActivePlayer = () =>
     activePlayer === playerO
       ? (activePlayer = playerX)
       : (activePlayer = playerO);
   const getActivePlayer = () => activePlayer;
-  const placeMark = (player) => {
-    while (true){
-    const col = Number(prompt("which column?"));
-    const row = Number(prompt("which row?"));
+  const placeMark = (row,col,player=activePlayer) => {
     if (gameboard.getSpace(row,col) === ""){
     gameboard.inputMark(row, col, player);
-    break;
+    gameboard.drawBoard()
+    switchActivePlayer()
+    checkForWin()
+    return true;
     }
     console.log("this cell already contains a mark!")
     }
-  };
+
   const checkForWin = () => {
     //check for win verticaly
     const playerMark = activePlayer.getMark();
@@ -111,21 +113,19 @@ function GameController() {
       return true;
     }
   };
-  const turn = () => {
-    for (let k = 0; k < 9; k++) {
+  const turn = (col,row) => {
       console.log(`${activePlayer.getMark()}'s turn`);
-      placeMark(activePlayer);
-      if (checkForWin()) {
+      if (placeMark(activePlayer)){
+        if (checkForWin()) {
         gameboard.printBoard();
         gameboard.drawBoard();
-        break;
       }
       switchActivePlayer();
       gameboard.printBoard();
       gameboard.drawBoard();
-    }
-  };
-  return { turn };
+      }
+    };
+  return { turn, placeMark };
 }
+
 game = GameController();
-game.turn();
