@@ -52,6 +52,7 @@ function Player(mark) {
 function GameController() {
   gameboard = GameBoard();
   gameEnded = false
+  moveCounter = 0
   playerX = Player("X");
   playerO = Player("O");
   playerindicator = document.querySelector(".currentplayer")
@@ -76,6 +77,7 @@ function GameController() {
 
   const checkForWin = () => {
     //check for win verticaly
+    moveCounter += 1;
     const playerMark = activePlayer.getMark();
     for (let i = 0; i < 3; i++) {
       if (
@@ -118,6 +120,10 @@ function GameController() {
       alert(`${gameboard.getSpace(0, 0)} won!`);
       gameEnded = true
       return true;
+    }
+    if (moveCounter == 9){
+        alert("draw!");
+        gameEnded = true;
     }
   };
   return { placeMark };
